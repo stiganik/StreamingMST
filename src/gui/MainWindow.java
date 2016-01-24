@@ -6,9 +6,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.SwingConstants;
 
 import algorithm.StreamingMST;
 
@@ -44,7 +42,7 @@ public class MainWindow {
 		toolbar.setBackground(new Color(180, 180, 180));
 		graphics.setBackground(new Color(255, 255, 255));
 		
-		c.weighty = 0.1;
+		c.weighty = 0.05;
 		content.add(toolbar,c);
 		c.gridy += 1;
 		c.weighty = 0.9;
