@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import dataTypes.Edge;
 
-public class StreamingMST {
+public interface StreamingMST {
 	/*
 	 * Can be revised, doesn't have to stay like this
 	 * I just wrote the methods blindly without knowing
@@ -17,15 +17,9 @@ public class StreamingMST {
 	// Add new edge to MST data structure
 	// return True, if edge is accepted in MST
 	// return False, if the edge was ignored
-	public boolean newEdge(Edge edge) {
-		return false;
-	}
+	public void newEdge(Edge edge);
 	
 	// Return all edges currently in the MST data structure
-	public ArrayList<Edge> getEdges(){
-		return null;
-	}
-	
-	
+	public ArrayList<Edge> getEdges();
 	
 }
