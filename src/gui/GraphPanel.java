@@ -40,8 +40,8 @@ public class GraphPanel extends JPanel {
 		
 		// Draw points with label
 		if(nodes.size() != 0) {
-			int turn = 360 / nodes.size();
-			int rotation = -90;
+			double turn = 360.0 / nodes.size();
+			double rotation = -90;
 			int x = this.getWidth() - PADDING - RADIUS/2;
 			int y = this.getHeight() / 2;
 			FontMetrics metrics = g2.getFontMetrics();
@@ -61,7 +61,7 @@ public class GraphPanel extends JPanel {
 			}
 		}
 	}
-	private int[] rotate_point(float cx,float cy,float angle, int x, int y)
+	private int[] rotate_point(float cx,float cy,double angle, int x, int y)
 	{
 	  float s = (float) Math.sin(Math.toRadians(angle));
 	  float c = (float) Math.cos(Math.toRadians(angle));
