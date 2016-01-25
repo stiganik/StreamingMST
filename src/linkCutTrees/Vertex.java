@@ -1,9 +1,13 @@
 package linkCutTrees;
 
+import java.util.List;
+
 public class Vertex {
 	
 	String label;
 	int x, y;
+	List<Vertex> children;
+	int lastAccessed;
 	
 	public Vertex(String label, int x, int y) {
 		super();
