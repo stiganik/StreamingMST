@@ -1,4 +1,4 @@
-package linkcuttrees;
+package linkCutTrees;
 import java.util.List;
 
 public interface LinkCutTree {

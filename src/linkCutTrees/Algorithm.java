@@ -1,4 +1,4 @@
-package linkcuttrees;
+package linkCutTrees;
 
 public class Algorithm {
 	
