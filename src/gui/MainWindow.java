@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
 
 import algorithm.StreamingMST;
 
@@ -108,6 +109,7 @@ public class MainWindow {
 			public void actionPerformed(ActionEvent e) {
 				int nodes = getValue();
 				if (nodes != 0) {
+					// implement something useful
 					System.out.println(nodes);
 				}
 			}
@@ -120,6 +122,7 @@ public class MainWindow {
 			public void actionPerformed(ActionEvent e) {
 				File file = getFile();
 				if(file != null) {
+					// implement something useful
 					System.out.println(file.getAbsolutePath());
 				}
 			}
@@ -132,6 +135,25 @@ public class MainWindow {
 
 	protected File getFile() {
 		JFileChooser fc = new JFileChooser();
+		FileFilter filter = new FileFilter() {
+			@Override
+			public String getDescription() {
+				return "Comma Separated Values (.csv)";
+			}
+			@Override
+			public boolean accept(File f) {
+				int i = f.getAbsolutePath().lastIndexOf('.');
+				if (i > 0) {
+				    if(f.getAbsolutePath().substring(i+1).equalsIgnoreCase("csv")){
+				    	return true;
+				    }
+				}
+				return false;
+			}
+		};
+		fc.removeChoosableFileFilter(
+		fc.getFileFilter() );
+		fc.addChoosableFileFilter(filter);
 		fc.showOpenDialog(null);
 		File f = fc.getSelectedFile();
 		return f;
