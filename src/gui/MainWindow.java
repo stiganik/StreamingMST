@@ -1,6 +1,5 @@
 package gui;
 
-import java.awt.Color;
 import java.awt.Container;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -112,6 +111,17 @@ public class MainWindow {
 					ArrayList<Point> points = createNodes(nodes);
 					edit.addPoints(points);
 					result.addPoints(points);
+					edit.addEdge("20", "8", 3);
+					edit.addEdge("20", "11", 2);
+					edit.addEdge("20", "15", 7);
+					edit.addEdge("11", "8", 5);
+					edit.addEdge("7", "8", 1);
+					edit.addEdge("15", "7", 10);
+					
+					result.addEdge("20", "11", 2);
+					result.addEdge("20", "15", 7);
+					result.addEdge("20", "8", 3);
+					result.addEdge("8", "7", 1);
 					frame.repaint();
 				}
 			}
