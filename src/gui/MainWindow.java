@@ -7,11 +7,13 @@ import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.ArrayList;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 
 import algorithm.StreamingMST;
+import dataTypes.Point;
 
 public class MainWindow {
 	private JFrame frame;
@@ -42,10 +44,8 @@ public class MainWindow {
 		
 		JToolBar toolBar = createToolBar();
 		
-		edit = new GraphPanel();
-		edit.setBackground(new Color(200, 200, 200));
-		result = new GraphPanel();
-		result.setBackground(new Color(255, 255, 255));
+		edit = new GraphPanel("EDIT");
+		result = new GraphPanel("RESULT");
 		
 		c.gridx = 0;
 		c.gridy = 0;
@@ -109,8 +109,10 @@ public class MainWindow {
 			public void actionPerformed(ActionEvent e) {
 				int nodes = getValue();
 				if (nodes != 0) {
-					// implement something useful
-					System.out.println(nodes);
+					ArrayList<Point> points = createNodes(nodes);
+					edit.addPoints(points);
+					result.addPoints(points);
+					frame.repaint();
 				}
 			}
 		});
@@ -131,6 +133,14 @@ public class MainWindow {
 		
 		menuBar.add(menu);
 		return menuBar;
+	}
+
+	protected ArrayList<Point> createNodes(int nodes) {
+		ArrayList<Point> arr = new ArrayList<Point>();
+		for(int i = 0; i < nodes; ++i) {
+			arr.add(new Point(String.valueOf(i)));
+		}
+		return arr;
 	}
 
 	protected File getFile() {
