@@ -6,6 +6,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 import javax.swing.*;
 
@@ -117,13 +118,23 @@ public class MainWindow {
 		menuItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("Open Graph");
+				File file = getFile();
+				if(file != null) {
+					System.out.println(file.getAbsolutePath());
+				}
 			}
 		});
 		menu.add(menuItem);
 		
 		menuBar.add(menu);
 		return menuBar;
+	}
+
+	protected File getFile() {
+		JFileChooser fc = new JFileChooser();
+		fc.showOpenDialog(null);
+		File f = fc.getSelectedFile();
+		return f;
 	}
 
 	protected int getValue() {
