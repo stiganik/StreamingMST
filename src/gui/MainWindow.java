@@ -14,6 +14,8 @@ import algorithm.StreamingMST;
 public class MainWindow {
 	private JFrame frame;
 	private StreamingMST algorithm;
+	private GraphPanel edit;
+	private GraphPanel result;
 	private static int WIDTH = 800;
 	private static int HEIGHT = 600;
 
@@ -30,18 +32,18 @@ public class MainWindow {
 		Container content = frame.getContentPane();
 		content.setLayout(new GridBagLayout());
 		
+		GridBagConstraints c = new GridBagConstraints();
+		c.fill = GridBagConstraints.BOTH;
+		
 		JMenuBar menuBar = createMenuBar();
 		frame.setJMenuBar(menuBar);
 		
 		JToolBar toolBar = createToolBar();
 		
-		JPanel edit = new JPanel();
+		edit = new GraphPanel();
 		edit.setBackground(new Color(200, 200, 200));
-		JPanel result = new JPanel();
+		result = new GraphPanel();
 		result.setBackground(new Color(255, 255, 255));
-		
-		GridBagConstraints c = new GridBagConstraints();
-		c.fill = GridBagConstraints.BOTH;
 		
 		c.gridx = 0;
 		c.gridy = 0;
@@ -74,7 +76,7 @@ public class MainWindow {
 		button.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
+				System.out.println("Reset");
 			}
 		});
 		toolBar.add(button);
@@ -85,7 +87,7 @@ public class MainWindow {
 		button.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
+				System.out.println("Start");
 			}
 		});
 		button.setFocusPainted(false);
@@ -103,7 +105,10 @@ public class MainWindow {
 		menuItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("New Graph");
+				int nodes = getValue();
+				if (nodes != 0) {
+					System.out.println(nodes);
+				}
 			}
 		});
 		menu.add(menuItem);
@@ -119,5 +124,21 @@ public class MainWindow {
 		
 		menuBar.add(menu);
 		return menuBar;
+	}
+
+	protected int getValue() {
+		String input = JOptionPane.showInputDialog("Amount of nodes", 1);
+		int nodes = 0;
+		if(input == null){
+			return nodes;
+		}
+		try {
+			nodes = Integer.parseInt(input);
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Invalid number", "Error",
+                    JOptionPane.ERROR_MESSAGE);
+		}
+		return nodes;
+		
 	}
 }
