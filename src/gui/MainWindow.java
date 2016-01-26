@@ -12,7 +12,7 @@ import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 
 import algorithm.StreamingMST;
-import dataTypes.Point;
+import linkCutTrees.Vertex;
 
 public class MainWindow {
 	private JFrame frame;
@@ -108,7 +108,7 @@ public class MainWindow {
 			public void actionPerformed(ActionEvent e) {
 				int nodes = getValue();
 				if (nodes != 0) {
-					ArrayList<Point> points = createNodes(nodes);
+					ArrayList<Vertex> points = createNodes(nodes);
 					edit.addPoints(points);
 					result.addPoints(points);
 					edit.addEdge("20", "8", 3);
@@ -145,10 +145,10 @@ public class MainWindow {
 		return menuBar;
 	}
 
-	protected ArrayList<Point> createNodes(int nodes) {
-		ArrayList<Point> arr = new ArrayList<Point>();
+	protected ArrayList<Vertex> createNodes(int nodes) {
+		ArrayList<Vertex> arr = new ArrayList<Vertex>();
 		for(int i = 0; i < nodes; ++i) {
-			arr.add(new Point(String.valueOf(i)));
+			arr.add(new Vertex(String.valueOf(i), 0, 0));
 		}
 		return arr;
 	}
