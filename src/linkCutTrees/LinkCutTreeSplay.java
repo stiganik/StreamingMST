@@ -39,7 +39,6 @@ public class LinkCutTreeSplay implements LinkCutTree {
 	@Override
 	// Cut the represented tree at node v.
 	public void cut(Vertex v) {
-		
 		// First, access v, which puts all the elements lower than v in the represented tree as the right child of v in the auxiliary tree.
 		access(v);
 		
@@ -79,18 +78,20 @@ public class LinkCutTreeSplay implements LinkCutTree {
 		List<Vertex> path = new ArrayList<Vertex>();
 		
 		// Access vertex v to find the auxiliary tree with all the nodes on the path from the represented tree root R to vertex v.
-		access(v);
-		
-		// Since auxiliary trees are keyed by depth, the root R will be the leftmost node of the auxiliary tree. Choose the left child of v recursively until we can go no further, and add each found node to the path; this is the path from v to R.
-		path.add(v);
-		while (v.left != null) {
-			v = v.left;
-			path.add(v);
-		}
-		
-		// Return the path found.
+		access(v);	
+		traversePath(v, path);		
 		return path;
 		
+	}
+	
+	public void traversePath(Vertex v, List<Vertex> path) {
+		if(v.right != null) {
+			traversePath(v.right, path);
+		}
+		path.add(v);
+		if(v.left != null) {
+			traversePath(v.left, path);
+		}
 	}
 	
 	// Accesses the vertex v. Vertex v will no longer have any preferred children, and will be at the end of the path.

@@ -13,10 +13,8 @@ import dataTypes.Edge;
 public class Algorithm implements StreamingMST {
 	
 	Set<Vertex> vertices = new HashSet<>();
-	
 	Map<Vertex, Map<Vertex, Integer>> edges = new HashMap<>();
-	
-	LinkCutTree tree = new LinkCutTreeSplay();
+	LinkCutTree tree;
 	
 	@Override
 	public ArrayList<Edge> getEdges() {
@@ -61,7 +59,7 @@ public class Algorithm implements StreamingMST {
 	
 	private void breakCycle(Vertex v1, Vertex v2, int weight) {
 		List<Vertex> path1 = tree.findPath(v1);
-		List<Vertex> path2 = tree.findPath(v2);		
+		List<Vertex> path2 = tree.findPath(v2);
 		unifyPaths(path1, path2);
 		
 		int currentMaxWeight = weight;
@@ -192,5 +190,9 @@ public class Algorithm implements StreamingMST {
 			edges.get(v2).put(v1, weight);
 		}
 	}
+
+	public Algorithm() {
+		this.tree = new LinkCutTreeSplay();
+	}	
 
 }
