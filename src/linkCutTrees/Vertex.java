@@ -1,19 +1,27 @@
 package linkCutTrees;
 
-import java.util.List;
-
 public class Vertex {
 	
 	String label;
 	int x, y;
-	Vertex pathParent;
+	
+	// The left and right children of the node, and the parent of the node, in an auxiliary tree.
 	Vertex left, right, parent;
+	
+	// The path-parent pointer in the link/cut tree.
+	Vertex pathParent;
 	
 	public Vertex(String label, int x, int y) {
 		super();
+		
 		this.label = label;
 		this.x = x;
 		this.y = y;
+		
+		left = null;
+		right = null;
+		parent = null;
+		pathParent = null;
 	}
 	
 	@Override
