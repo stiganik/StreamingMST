@@ -6,8 +6,8 @@ public class Vertex {
 	
 	String label;
 	int x, y;
-	List<Vertex> children;
-	int lastAccessed;
+	Vertex pathParent;
+	Vertex left, right, parent;
 	
 	public Vertex(String label, int x, int y) {
 		super();
