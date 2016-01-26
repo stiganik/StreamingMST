@@ -12,7 +12,9 @@ import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 
 import algorithm.StreamingMST;
+import dataTypes.Edge;
 import linkCutTrees.Vertex;
+import utils.CSVParser;
 
 public class MainWindow {
 	private JFrame frame;
@@ -111,7 +113,7 @@ public class MainWindow {
 					ArrayList<Vertex> points = createNodes(nodes);
 					edit.addPoints(points);
 					result.addPoints(points);
-					edit.addEdge("20", "8", 3);
+					/*edit.addEdge("20", "8", 3);
 					edit.addEdge("20", "11", 2);
 					edit.addEdge("20", "15", 7);
 					edit.addEdge("11", "8", 5);
@@ -121,7 +123,7 @@ public class MainWindow {
 					result.addEdge("20", "11", 2);
 					result.addEdge("20", "15", 7);
 					result.addEdge("20", "8", 3);
-					result.addEdge("8", "7", 1);
+					result.addEdge("8", "7", 1);*/
 					frame.repaint();
 				}
 			}
@@ -134,8 +136,22 @@ public class MainWindow {
 			public void actionPerformed(ActionEvent e) {
 				File file = getFile();
 				if(file != null) {
-					// implement something useful
-					System.out.println(file.getAbsolutePath());
+					CSVParser par = new CSVParser();
+					if(par.parse(file)){
+						ArrayList<Vertex> nodes = par.getNodes();
+						ArrayList<Edge> edges = par.getEdges();
+						edit.addPoints(nodes);
+						result.addPoints(nodes);
+						for(Edge edge : edges){
+							result.addEdge(edge);
+						}
+						
+						frame.repaint();
+					} else {
+						JOptionPane.showMessageDialog(null, "Failed to parse file", "Error",
+			                    JOptionPane.ERROR_MESSAGE);
+					}
+					
 				}
 			}
 		});

@@ -42,17 +42,7 @@ public class GraphPanel extends JPanel {
 		}
 	}
 	
-	public void addEdge(String p1, String p2, int weight){
-		Edge e = new Edge();
-		for(Vertex v : nodes) {
-			if(v.getLabel().equalsIgnoreCase(p1)){
-				e.setVertex1(v);
-			}
-			if(v.getLabel().equalsIgnoreCase(p2)){
-				e.setVertex2(v);
-			}
-		}
-		e.setWeight(weight);
+	public void addEdge(Edge e){
 		edges.add(e);
 	} 
 	
