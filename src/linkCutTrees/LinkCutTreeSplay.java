@@ -1,5 +1,6 @@
 package linkCutTrees;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -72,8 +73,23 @@ public class LinkCutTreeSplay implements LinkCutTree {
 
 	@Override
 	public List<Vertex> findPath(Vertex v) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		// Initialize the path as a list of vertices.
+		List<Vertex> path = new ArrayList<Vertex>();
+		
+		// Access vertex v to find the auxiliary tree with all the nodes on the path from the represented tree root R to vertex v.
+		access(v);
+		
+		// Since auxiliary trees are keyed by depth, the root R will be the leftmost node of the auxiliary tree. Choose the left child of v recursively until we can go no further, and add each found node to the path; this is the path from v to R.
+		path.add(v);
+		while (v.left != null) {
+			v = v.left;
+			path.add(v);
+		}
+		
+		// Return the path found.
+		return path;
+		
 	}
 	
 	// Accesses the vertex v. Vertex v will no longer have any preferred children, and will be at the end of the path.
