@@ -29,7 +29,7 @@ public class LinkCutTreeSplay implements LinkCutTree {
 		
 		// Make v2 the left child of v1, making it the parent of v1 in the represented tree.
 		v1.left = v2;
-		v2.parent = v1; // TODO: Optimise
+		v2.parent = v1;
 		v2.pathParent = null;
 	
 	}
@@ -111,7 +111,48 @@ public class LinkCutTreeSplay implements LinkCutTree {
 		
 	}
 	
+	// Move v to the root of the auxiliary tree.
 	private void splay(Vertex v) {
+		
+		// Perform splaying until vertex v does not have a parent, meaning it is the root.
+		while (v.parent != null) {
+			
+			// Find the parent p and grandparent g of v to perform zigging and/or zagging.
+			Vertex p = v.parent;
+			Vertex g = p.parent;
+			
+			// If the parent p is the root, the zig operation is performed.
+			if (g == null) {
+				
+				// Zig
+				// The tree is rotated on the edge between v and p.
+				rotate(v);
+				
+			// If the parent p is not the root and v and p are either both right children or both left children, the zig-zig operation is performed.
+			} else if ((v == p.left && p == g.left) || (v == p.right && p == g.right)) {
+				
+				// Zig-zig
+				// The tree is rotated on the edge between p and g.
+				rotate(p);
+				// Then, the tree is rotated on the edge between v and p.
+				rotate(v);
+			
+			// If the parent p is not the root and v is a right child and p is a left child, or vice versa, the zig-zag operation is performed.
+			} else {
+				
+				// Zig-zag
+				// The tree is rotated on the edge between v and p.
+				rotate(v);
+				// Then, the tree is rotated on the resulting edge between p and g.
+				rotate(v);
+				
+			}
+			
+		}
+		
+	}
+	
+	private void rotate(Vertex v) {
 		// TODO
 	}
 
