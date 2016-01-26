@@ -43,14 +43,15 @@ public class LinkCutTreeSplay implements LinkCutTree {
 		
 		// All nodes in the left subtree of v are nodes higher than v in the represented tree. We can, therefore, disconnect the left child of v, making v the root of a represented tree.
 		if (v.left != null) {
-			v.left.parent = null;
 			v.left.pathParent = null;
+			v.left.parent = null;
 			v.left = null;
 		}
 		
 	}
 
 	@Override
+	// Finds the root vertex of the tree vertex v exists in.
 	public Vertex findRoot(Vertex v) {
 		// TODO Auto-generated method stub
 		return null;
@@ -62,7 +63,55 @@ public class LinkCutTreeSplay implements LinkCutTree {
 		return null;
 	}
 	
+	// Accesses the vertex v. Vertex v will no longer have any preferred children, and will be at the end of the path.
 	private void access(Vertex v) {
+		
+		// Splay at v, bringing it to the root of the auxiliary tree.
+		splay(v);
+		
+		// Disconnect the right subtree of v (every node that came below it on the previous preferred path).
+		if (v.right != null) {
+			// The root of the disconnected tree will have a path-parent pointer, which we point to v.
+			v.right.pathParent = v;
+			v.right.parent = null;
+			v.right = null;
+		}
+		
+		// Walk up to the represented tree root R, breaking and resetting the preferred path where necessary.
+		Vertex current = v;
+		// If the path that v is on, already contains the root R, the path-parent pointer will be null, and we are done with access.
+		while (current.pathParent != null) {
+			
+			// Follow the path-parent pointer from the current node to some node on another path w.
+			Vertex w = current.pathParent;
+			
+			// Break the old preferred path of w and reconnect it to the path v is on.
+			
+			// Splay at w
+			splay(w);
+			
+			// Disconnect w's right subtree, setting its path-parent pointer to w.
+			if (w.right != null) {
+				w.right.pathParent = w;
+				w.right.parent = null;
+			}
+			
+			// Since all nodes are keyed by depth, and every node in the path of v is deeper than every node in the path of w, connect the tree of v as the right child of w.
+			w.right = current;
+			current.parent = w;
+			current.pathParent = null;
+			
+			// Repeat the process, moving upward.
+			current = w;
+			
+		}
+		
+		// Splay at v again, rotating it to root.
+		splay(v);
+		
+	}
+	
+	private void splay(Vertex v) {
 		// TODO
 	}
 
