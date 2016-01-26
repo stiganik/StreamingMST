@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.Timer;
 
 import javax.swing.*;
@@ -136,6 +137,7 @@ public class MainWindow {
 				int nodes = getValue();
 				if (nodes != 0) {
 					ArrayList<Vertex> points = createNodes(nodes);
+					edges = createEdges(points);
 					edit.addPoints(points);
 					result.addPoints(points);
 					frame.repaint();
@@ -170,6 +172,25 @@ public class MainWindow {
 		
 		menuBar.add(menu);
 		return menuBar;
+	}
+
+	protected ArrayList<Edge> createEdges(ArrayList<Vertex> points) {
+		Random r = new Random();
+		int amount = points.size();
+		ArrayList<Edge> es = new ArrayList<Edge>();
+		for(int i = 0; i < points.size(); ++i){
+			for (int j = i + 1; j < points.size(); ++j){
+				int weight = r.nextInt(amount);
+				es.add(new Edge(points.get(i), points.get(j), weight));
+			}
+		}
+		ArrayList<Edge> ret = new ArrayList<Edge>();
+		for(Edge e : es) {
+			if (r.nextInt(100) > 50){
+				ret.add(e);
+			}
+		}
+		return ret;
 	}
 
 	protected ArrayList<Vertex> createNodes(int nodes) {
