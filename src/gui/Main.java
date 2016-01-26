@@ -1,7 +1,7 @@
 package gui;
 
 import algorithm.StreamingMST;
-import linkcuttrees.Algorithm;
+import linkCutTrees.Algorithm;
 
 public class Main {
 

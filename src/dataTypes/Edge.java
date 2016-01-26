@@ -1,6 +1,6 @@
 package dataTypes;
 
-import linkcuttrees.Vertex;
+import linkCutTrees.Vertex;
 
 public class Edge {
 	
