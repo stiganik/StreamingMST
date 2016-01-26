@@ -16,7 +16,7 @@ public class Algorithm implements StreamingMST {
 	
 	Map<Vertex, Map<Vertex, Integer>> edges = new HashMap<>();
 	
-	LinkCutTree tree = new LinkCutTreeNaive();
+	LinkCutTree tree = new LinkCutTreeSplay();
 	
 	@Override
 	public ArrayList<Edge> getEdges() {
@@ -31,7 +31,7 @@ public class Algorithm implements StreamingMST {
 	}
 	
 	@Override
-	public void newEdge(Edge edge) {
+	public void newEdge(Edge edge) {	
 		Vertex v1 = edge.getVertex1();
 		Vertex v2 = edge.getVertex2();
 		int weight = edge.getWeight();
@@ -39,16 +39,15 @@ public class Algorithm implements StreamingMST {
 		if(!vertices.contains(v1) && !vertices.contains(v2)) {
 			handleNewEdges(v1, v2, weight);			
 		}
-		else if(vertices.contains(v1)) {
+		else if(!vertices.contains(v2)) {
 			handleNewEdge(v1, v2, weight);
 		}
-		else if(vertices.contains(v2)) {
+		else if(!vertices.contains(v1)) {
 			handleNewEdge(v2, v1, weight);
 		}
 		else {
 			handleOldEdges(v1, v2, weight);
 		}
-		
 	}
 	
 	private void handleOldEdges(Vertex v1, Vertex v2, int weight) {
@@ -62,7 +61,7 @@ public class Algorithm implements StreamingMST {
 	
 	private void breakCycle(Vertex v1, Vertex v2, int weight) {
 		List<Vertex> path1 = tree.findPath(v1);
-		List<Vertex> path2 = tree.findPath(v2);	
+		List<Vertex> path2 = tree.findPath(v2);		
 		unifyPaths(path1, path2);
 		
 		int currentMaxWeight = weight;
@@ -72,6 +71,7 @@ public class Algorithm implements StreamingMST {
 		for(int i = 0; i < path1.size()-1; i++) {
 			Vertex measuredVert1 = path1.get(i);
 			Vertex measuredVert2 = path1.get(i+1);
+			
 			int measuredWeight = measureEdge(measuredVert1, measuredVert2);
 			
 			if(measuredWeight > currentMaxWeight) {
@@ -82,8 +82,9 @@ public class Algorithm implements StreamingMST {
 		}
 		
 		for(int i = 0; i < path2.size()-1; i++) {
-			Vertex measuredVert1 = path1.get(i);
-			Vertex measuredVert2 = path1.get(i+1);
+			Vertex measuredVert1 = path2.get(i);
+			Vertex measuredVert2 = path2.get(i+1);
+			
 			int measuredWeight = measureEdge(measuredVert1, measuredVert2);
 			
 			if(measuredWeight > currentMaxWeight) {
@@ -110,13 +111,16 @@ public class Algorithm implements StreamingMST {
 
 	private void unifyPaths(List<Vertex> path1, List<Vertex> path2) {
 		Vertex previous = null;
-		while(path1.get(0) == path2.get(0)) {
-			previous = path1.get(0);
-			path1.remove(0);
-			path2.remove(0);
+		while(path1.get(path1.size()-1) == path2.get(path2.size()-1)) {
+			previous = path1.get(path1.size()-1);
+			path1.remove(path1.size()-1);
+			path2.remove(path2.size()-1);
+			if(path1.size() == 0  || path2.size() == 0) {
+				break;
+			}
 		}
-		path1.add(0, previous);
-		path2.add(0, previous);
+		path1.add(previous);
+		path2.add(previous);
 	}
 
 	private void mergeTrees(Vertex v1, Vertex v2, int weight) {
