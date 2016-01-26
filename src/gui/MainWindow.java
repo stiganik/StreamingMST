@@ -7,12 +7,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Timer;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 
 import algorithm.StreamingMST;
+import animation.Animation;
 import dataTypes.Edge;
+import linkCutTrees.Algorithm;
 import linkCutTrees.Vertex;
 import utils.CSVParser;
 
@@ -23,9 +26,13 @@ public class MainWindow {
 	private GraphPanel result;
 	private static int WIDTH = 800;
 	private static int HEIGHT = 600;
+	private static final int time = 1200;	// Animation time
+	
+	private ArrayList<Edge> edges = null;
+	private Timer timer;
 
-	public MainWindow(String name, StreamingMST algorithm){
-		this.algorithm = algorithm;
+	public MainWindow(String name){
+		this.timer = null;
 		initialize(name);
 	}
 	
@@ -74,23 +81,28 @@ public class MainWindow {
 		
 		toolBar.addSeparator();
 		
-		JButton button = new JButton("Reset");
-		button.setFocusPainted(false);
+		JButton button = new JButton("Start");
 		button.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("Reset");
+				if(edges != null && timer == null) {
+					algorithm = new Algorithm();
+					startAnimation();
+				}
 			}
 		});
+		button.setFocusPainted(false);
 		toolBar.add(button);
 		
 		toolBar.addSeparator();
 		
-		button = new JButton("Start");
+		button = new JButton("Stop");
 		button.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("Start");
+				if(edges != null && timer != null) {
+					stopAnimation();
+				}
 			}
 		});
 		button.setFocusPainted(false);
@@ -98,6 +110,18 @@ public class MainWindow {
 		
 		toolBar.setFloatable(false);
 		return toolBar;
+	}
+
+	protected void stopAnimation() {
+		timer.cancel();
+		timer = null;
+	}
+
+	protected void startAnimation() {
+		clearScreen();
+		timer = new Timer(); // Instantiate Timer Object
+		Animation a = new Animation(this); // Instantiate SheduledTask class
+		timer.schedule(a, 0, time); // Create Repetitively task for every 1 secs
 	}
 
 	private JMenuBar createMenuBar() {
@@ -108,22 +132,12 @@ public class MainWindow {
 		menuItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				clearScreen();
 				int nodes = getValue();
 				if (nodes != 0) {
 					ArrayList<Vertex> points = createNodes(nodes);
 					edit.addPoints(points);
 					result.addPoints(points);
-					/*edit.addEdge("20", "8", 3);
-					edit.addEdge("20", "11", 2);
-					edit.addEdge("20", "15", 7);
-					edit.addEdge("11", "8", 5);
-					edit.addEdge("7", "8", 1);
-					edit.addEdge("15", "7", 10);
-					
-					result.addEdge("20", "11", 2);
-					result.addEdge("20", "15", 7);
-					result.addEdge("20", "8", 3);
-					result.addEdge("8", "7", 1);*/
 					frame.repaint();
 				}
 			}
@@ -134,22 +148,15 @@ public class MainWindow {
 		menuItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				clearScreen();
 				File file = getFile();
 				if(file != null) {
 					CSVParser par = new CSVParser();
 					if(par.parse(file)){
 						ArrayList<Vertex> nodes = par.getNodes();
-						ArrayList<Edge> edges = par.getEdges();
+						edges = par.getEdges();
 						edit.addPoints(nodes);
 						result.addPoints(nodes);
-						for(Edge edge : edges){
-							algorithm.newEdge(edge);
-							edit.addEdge(edge);
-						}
-						for(Edge edge : algorithm.getEdges()){
-							result.addEdge(edge);
-						}
-						
 						frame.repaint();
 					} else {
 						JOptionPane.showMessageDialog(null, "Failed to parse file", "Error",
@@ -213,5 +220,29 @@ public class MainWindow {
 		}
 		return nodes;
 		
+	}
+
+	public void animate(int p) {
+		if(p < 0)
+			return;
+		if(p >= edges.size()){
+			this.timer.cancel();
+			this.timer = null;
+			return;
+		}
+		
+		Edge e = edges.get(p);
+		algorithm.newEdge(e);
+		
+		edit.addEdge(e);
+		result.addEdges(algorithm.getEdges());
+		
+		frame.repaint();
+	}
+
+	private void clearScreen() {
+		edit.clearEdges();
+		result.clearEdges();
+		frame.repaint();
 	}
 }

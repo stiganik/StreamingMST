@@ -42,6 +42,10 @@ public class GraphPanel extends JPanel {
 		}
 	}
 	
+	public void addEdges(ArrayList<Edge> edges){
+		this.edges = edges;
+	}
+	
 	public void addEdge(Edge e){
 		edges.add(e);
 	} 
@@ -119,5 +123,9 @@ public class GraphPanel extends JPanel {
 	  y = (int) (ynew + cy);
 	  int[] ret = {x,y};
 	  return ret;
+	}
+
+	public void clearEdges() {
+		edges.clear();		
 	}
 }
