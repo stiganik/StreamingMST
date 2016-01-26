@@ -143,6 +143,10 @@ public class MainWindow {
 						edit.addPoints(nodes);
 						result.addPoints(nodes);
 						for(Edge edge : edges){
+							algorithm.newEdge(edge);
+							edit.addEdge(edge);
+						}
+						for(Edge edge : algorithm.getEdges()){
 							result.addEdge(edge);
 						}
 						

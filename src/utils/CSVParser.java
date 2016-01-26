@@ -70,9 +70,7 @@ public class CSVParser {
 	}
 
 	private String clean(String label) {
-		System.out.println("\"" + label + "\"");
 		label = label.replaceAll("\\s+","");
-		System.out.println("\"" + label + "\"");
 		return label;
 	}
 
