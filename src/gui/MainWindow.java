@@ -1,15 +1,18 @@
 package gui;
 
-import java.awt.Color;
 import java.awt.Container;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.util.ArrayList;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
 
 import algorithm.StreamingMST;
+import dataTypes.Point;
 
 public class MainWindow {
 	private JFrame frame;
@@ -40,10 +43,8 @@ public class MainWindow {
 		
 		JToolBar toolBar = createToolBar();
 		
-		edit = new GraphPanel();
-		edit.setBackground(new Color(200, 200, 200));
-		result = new GraphPanel();
-		result.setBackground(new Color(255, 255, 255));
+		edit = new GraphPanel("EDIT");
+		result = new GraphPanel("RESULT");
 		
 		c.gridx = 0;
 		c.gridy = 0;
@@ -107,7 +108,21 @@ public class MainWindow {
 			public void actionPerformed(ActionEvent e) {
 				int nodes = getValue();
 				if (nodes != 0) {
-					System.out.println(nodes);
+					ArrayList<Point> points = createNodes(nodes);
+					edit.addPoints(points);
+					result.addPoints(points);
+					edit.addEdge("20", "8", 3);
+					edit.addEdge("20", "11", 2);
+					edit.addEdge("20", "15", 7);
+					edit.addEdge("11", "8", 5);
+					edit.addEdge("7", "8", 1);
+					edit.addEdge("15", "7", 10);
+					
+					result.addEdge("20", "11", 2);
+					result.addEdge("20", "15", 7);
+					result.addEdge("20", "8", 3);
+					result.addEdge("8", "7", 1);
+					frame.repaint();
 				}
 			}
 		});
@@ -117,13 +132,51 @@ public class MainWindow {
 		menuItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("Open Graph");
+				File file = getFile();
+				if(file != null) {
+					// implement something useful
+					System.out.println(file.getAbsolutePath());
+				}
 			}
 		});
 		menu.add(menuItem);
 		
 		menuBar.add(menu);
 		return menuBar;
+	}
+
+	protected ArrayList<Point> createNodes(int nodes) {
+		ArrayList<Point> arr = new ArrayList<Point>();
+		for(int i = 0; i < nodes; ++i) {
+			arr.add(new Point(String.valueOf(i)));
+		}
+		return arr;
+	}
+
+	protected File getFile() {
+		JFileChooser fc = new JFileChooser();
+		FileFilter filter = new FileFilter() {
+			@Override
+			public String getDescription() {
+				return "Comma Separated Values (.csv)";
+			}
+			@Override
+			public boolean accept(File f) {
+				int i = f.getAbsolutePath().lastIndexOf('.');
+				if (i > 0) {
+				    if(f.getAbsolutePath().substring(i+1).equalsIgnoreCase("csv")){
+				    	return true;
+				    }
+				}
+				return false;
+			}
+		};
+		fc.removeChoosableFileFilter(
+		fc.getFileFilter() );
+		fc.addChoosableFileFilter(filter);
+		fc.showOpenDialog(null);
+		File f = fc.getSelectedFile();
+		return f;
 	}
 
 	protected int getValue() {
