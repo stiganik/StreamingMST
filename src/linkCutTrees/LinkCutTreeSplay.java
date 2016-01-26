@@ -53,8 +53,21 @@ public class LinkCutTreeSplay implements LinkCutTree {
 	@Override
 	// Finds the root vertex of the tree vertex v exists in.
 	public Vertex findRoot(Vertex v) {
-		// TODO Auto-generated method stub
-		return null;
+
+		// Execute an access on vertex v to put it on the preferred path. It is then on the same preferred path and the same auxiliary tree as the represented tree root R.
+		access(v);
+		
+		// Since auxiliary trees are keyed by depth, the root R will be the leftmost node of the auxiliary tree. Choose the left child of v recursively until we can go no further; this is the root R.
+		while (v.left != null) {
+			v = v.left;
+		}
+		
+		// The root may be linearly deep. To make the next access quick, splay it.
+		splay(v);
+		
+		// Return the root found.
+		return v;
+		
 	}
 
 	@Override
