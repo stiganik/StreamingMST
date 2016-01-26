@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+// Link/Cut Tree with auxiliary splay trees. The methods are implemented heavily based on the Wikipedia articles on Link/Cut Trees and Splay Trees (26 January 2016).
 public class LinkCutTreeSplay implements LinkCutTree {
 	
 	private Set<Vertex> vertices = new HashSet<Vertex>();
