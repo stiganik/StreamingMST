@@ -117,7 +117,7 @@ public class LinkCutTreeSplay implements LinkCutTree {
 		// Perform splaying until vertex v does not have a parent, meaning it is the root.
 		while (v.parent != null) {
 			
-			// Find the parent p and grandparent g of v to perform zigging and/or zagging.
+			// Find the parent p and grandparent g of vertex v to perform zigging and/or zagging.
 			Vertex p = v.parent;
 			Vertex g = p.parent;
 			
@@ -153,7 +153,51 @@ public class LinkCutTreeSplay implements LinkCutTree {
 	}
 	
 	private void rotate(Vertex v) {
-		// TODO
+
+		// Find the parent p and grandparent g of vertex v to perform corresponding rotations.
+		Vertex p = v.parent;
+		Vertex g = p.parent;
+		
+		// If vertex v is the left child of its parent p, rotate right.
+		if (v == p.left) {
+			
+			p.left = v.right;
+			v.right = p;
+			p.parent = v;
+			
+			if (p.left != null) {
+				p.left.parent = p;
+			}
+			
+		// If vertex v is the right child of its parent p, rotate left.
+		} else if (v == p.right) {
+			
+			p.right = v.left;
+			v.left = p;
+			p.parent = v;
+			
+			if (p.right != null) {
+				p.right.parent = p;
+			}
+			
+		}
+		
+		// Set the rotated vertex v parent to be its prior parent's parent (the grandparent) g.
+		v.parent = g;
+		
+		// Set vertex v as either the left or right child of its new parent corresponding to the rotation performed, dependent on the prior parent's position.
+		if (g != null) {
+			if (p == g.left) {
+				g.left = v;
+			} else {
+				g.right = v;
+			}
+		}
+
+		// Move the path-parent pointer from p to v, as it could now be the new root.
+		v.pathParent = p.pathParent;
+		p.pathParent = null;
+		
 	}
 
 }
