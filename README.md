@@ -1,5 +1,15 @@
 # StreamingMST
 
+## The Project
+
+This project aims to simplify the problem of finding a minimum spanning tree from a stream of incoming edges.
+
+With classical algorithms such as Kruskal’s or Prim’s algorithm, saving all the streamed edges is required, which can take O(n²) memory, if the graph is a complete graph. However, it is possible to solve this problem without saving all the streamed edges and instead just traversing the stream and processing each edge only once, using O(n) memory for saving the edges of the MST.
+
+This can be achieved efficiently by using a special data structure called Link/Cut Trees.
+
+The algorithm implemented in this project has a worst case amortized cost of O(n log n).
+
 ## Building
 
 The project was developed strictly using Eclipse Mars. It is immediately importable with Eclipse, and that is the recommended IDE. The project can be built using the native tools in Eclipse.
